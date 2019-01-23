@@ -2,10 +2,11 @@
 #'
 #' @param chars Vector of character strings
 #' @param variable Character string giving the flag to search for.
+#' @param ignore_duplicates TRUE to just return first value in case of duplicates, FALSE for error
 #' @export
 
 # Extract position of variable in a Vector of character strings.
-scan_prm <- function(chars, variable){
+scan_prm <- function(chars, variable, ignore_duplicates = FALSE){
   pos <- grep(pattern = variable, x = chars)
   if (length(pos) == 0) {
     stop(paste("Variable", variable, "not found."))
@@ -32,7 +33,12 @@ scan_prm <- function(chars, variable){
         pos <- pos[check]
         return(pos)
       } else {
-        stop(paste("Variable", variable, "found multiple times."))
+        if (ignore_duplicates) {
+          warning(paste("Variable", variable, "found multiple times, returning first instance."))
+          return(pos[1])
+        } else {
+          stop(paste("Variable", variable, "found multiple times."))
+        }
       }
     }
   }

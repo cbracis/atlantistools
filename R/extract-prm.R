@@ -4,6 +4,7 @@
 #' The filename usually contains \code{biol_fishing} and does end in \code{.prm}.
 #' @param variables Character string giving the flag to search for. This should be
 #' a combination of the parameter name and the group-Code.
+#' @param ignore_duplicates TRUE to just return first value in case of duplicates, FALSE for error
 #' @return numeric vector.
 #'
 #' @examples
@@ -24,11 +25,11 @@
 # Use this to document prm_biol.
 
 #' @export
-extract_prm <- function(prm_biol, variables) {
+extract_prm <- function(prm_biol, variables, ignore_duplicates = FALSE) {
   # Read in parameter file!
   prm_biol_new <- readLines(con = prm_biol, warn = FALSE)
 
-  pos <- vapply(variables, scan_prm, FUN.VALUE = integer(1), chars = prm_biol_new)
+  pos <- vapply(variables, scan_prm, FUN.VALUE = integer(1), chars = prm_biol_new, ignore_duplicates = ignore_duplicates)
   result <- prm_biol_new[pos]
   result <- vapply(result, str_split_twice, FUN.VALUE = numeric(1), USE.NAMES = FALSE)
   return(result)
@@ -45,7 +46,7 @@ extract_prm_cohort <- function(prm_biol, variables) {
   slice <- function(prm, variable) {
     pos <- scan_prm(chars = prm, variable = variable)
     pos <- pos + 1
-    while (substr(prm[pos], 1, 1) == "#") pos <- pos + 1
+    while (substr(prm[pos], 1, 1) == "#" | trimws(prm[pos]) == "") pos <- pos + 1
 
     # Keep all numeric values
     value <- str_split_twice(char = prm[pos], min_only = FALSE)
