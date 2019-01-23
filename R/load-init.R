@@ -4,6 +4,9 @@
 #' The filename usually contains \code{init} and ends in \code{.nc}.
 #' @param vars Vector of character strings giving the variables to extract from the
 #' netcdf file.
+#' @param na.mode Whether to replace default values with NA The default value is 3, meaning
+#' no missing value conversion, so the \code{_FillValue} will be used instead of \code{NA}
+#' for \code{_} in the init file (see \code{\link{RNetCDF::var.get.nc}} for more options).
 #'
 #' @family load functions
 #' @export
@@ -26,7 +29,7 @@
 #' load_init(init = init, vars = vars)
 #' }
 
-load_init <- function(init, vars) {
+load_init <- function(init, vars, na.mode = 3) {
   # dummy
   read_nc <- RNetCDF::open.nc(con = init)
   on.exit(RNetCDF::close.nc(read_nc))
@@ -46,7 +49,7 @@ load_init <- function(init, vars) {
   wrong_var <- vars[!vars %in% var_names_ncdf]
   if (length(wrong_var) >= 1) stop(paste("Variable", paste(wrong_var, collapse = " "), "not found in init file."))
 
-  at_data <- lapply(vars, RNetCDF::var.get.nc, ncfile = read_nc)
+  at_data <- lapply(vars, RNetCDF::var.get.nc, ncfile = read_nc, na.mode = na.mode)
 
   # Box and layer!
   convert2d <- function(mat, layerid, n_boxes) {
