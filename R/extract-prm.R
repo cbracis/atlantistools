@@ -5,6 +5,8 @@
 #' @param variables Character string giving the flag to search for. This should be
 #' a combination of the parameter name and the group-Code.
 #' @param ignore_duplicates TRUE to just return first value in case of duplicates, FALSE for error
+#' @param value_next_line TRUE indicates parameter value on the following line (e.g. KDENR), FALSE
+#' for same line (most non-cohort parameters)
 #' @return numeric vector.
 #'
 #' @examples
@@ -25,13 +27,16 @@
 # Use this to document prm_biol.
 
 #' @export
-extract_prm <- function(prm_biol, variables, ignore_duplicates = FALSE) {
+extract_prm <- function(prm_biol, variables, ignore_duplicates = FALSE, value_next_line = FALSE) {
   # Read in parameter file!
   prm_biol_new <- readLines(con = prm_biol, warn = FALSE)
 
   pos <- vapply(variables, scan_prm, FUN.VALUE = integer(1), chars = prm_biol_new, ignore_duplicates = ignore_duplicates)
+  if (value_next_line) { pos <- pos + 1 }
   result <- prm_biol_new[pos]
-  result <- vapply(result, str_split_twice, FUN.VALUE = numeric(1), USE.NAMES = FALSE)
+  # only need to parse value if on same line, otherwise just convert to numeric
+  if (value_next_line) { result <- as.numeric(result) }
+  else{ result <- vapply(result, str_split_twice, FUN.VALUE = numeric(1), USE.NAMES = FALSE) }
   return(result)
 }
 
