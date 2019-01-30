@@ -18,7 +18,7 @@
 str_split_twice <- function(char, min_only = TRUE){
   patterns <- c(" ", "\t", ",", "\n", "\r")
   if (all(!stringr::str_detect(string = char, pattern = patterns))) {
-    stop("Neither space nor tab present.")
+    warning("Neither space nor tab present.")
   }
   for (i in seq_along(patterns)) {
     char <- unlist(stringr::str_split(string = char, pattern = patterns[i]))
