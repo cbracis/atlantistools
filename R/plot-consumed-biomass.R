@@ -40,6 +40,11 @@
 
 
 plot_consumed_biomass <- function(bio_consumed, select_time = NULL, show = 0.95) {
+  # move circlize depandancy to suggests from imports since it requires R 3.3
+  if (!requireNamespace("circlize", quietly = TRUE)) {
+    stop("circlize package needed for this function to work. Please install it.", call. = FALSE)
+  }
+
   # Restrict to selected timestep!
   if (is.null(select_time)) {
     one_time <- dplyr::filter_(bio_consumed, ~time == min(time))

@@ -12,13 +12,13 @@ License: GPL-3
 LazyData: true
 RoxygenNote: 6.0.1
 Suggests:
+  circlize,
   knitr,
   rfishbase,
   rmarkdown,
   testthat,
   vdiffr
 Imports:
-  circlize,
   curl,
   dplyr,
   ggplot2,
