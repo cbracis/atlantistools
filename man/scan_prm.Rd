@@ -4,12 +4,14 @@
 \alias{scan_prm}
 \title{Scan character vector for specific flag!}
 \usage{
-scan_prm(chars, variable)
+scan_prm(chars, variable, ignore_duplicates = FALSE)
 }
 \arguments{
 \item{chars}{Vector of character strings}
 
 \item{variable}{Character string giving the flag to search for.}
+
+\item{ignore_duplicates}{TRUE to just return first value in case of duplicates, FALSE for error}
 }
 \description{
 Scan character vector for specific flag!

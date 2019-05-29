@@ -5,7 +5,7 @@
 \alias{extract_prm_cohort}
 \title{Extract values for Atlantis parameters from the biological parameter file.}
 \usage{
-extract_prm(prm_biol, variables)
+extract_prm(prm_biol, variables, ignore_duplicates = FALSE)
 
 extract_prm_cohort(prm_biol, variables)
 }
@@ -15,6 +15,8 @@ The filename usually contains \code{biol_fishing} and does end in \code{.prm}.}
 
 \item{variables}{Character string giving the flag to search for. This should be
 a combination of the parameter name and the group-Code.}
+
+\item{ignore_duplicates}{TRUE to just return first value in case of duplicates, FALSE for error}
 }
 \value{
 numeric vector.

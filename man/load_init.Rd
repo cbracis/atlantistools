@@ -4,7 +4,7 @@
 \alias{load_init}
 \title{This function is used to read in data from the initial conditions file.}
 \usage{
-load_init(init, vars)
+load_init(init, vars, na.mode = 3)
 }
 \arguments{
 \item{init}{Character string giving the connection of the initial conditions netcdf file.
@@ -12,6 +12,10 @@ The filename usually contains \code{init} and ends in \code{.nc}.}
 
 \item{vars}{Vector of character strings giving the variables to extract from the
 netcdf file.}
+
+\item{na.mode}{Whether to replace default values with NA The default value is 3, meaning
+no missing value conversion, so the \code{_FillValue} will be used instead of \code{NA}
+for \code{_} in the init file (see \code{\link{RNetCDF::var.get.nc}} for more options).}
 }
 \value{
 A list of dataframes with columns atoutput, polygon and layer (if present).
