@@ -40,7 +40,7 @@ change_prm <- function(prm_biol, select_acronyms, roc, parameter,
   # Function to update a specific parameter composed of a parameter string
   # a group acronym and a seperator (by default "_") found in a prm file.
   update_prm_species <- function(prm_biol, acronym, roc, parameter, relative) {
-    if (parameter %in% c("mL", "mQ", "AgeClassSize")) {
+    if (parameter == "AgeClassSize" | ( parameter %in% c("mL", "mQ") & version_flag == 2)) {
       flag <- paste(acronym, parameter, sep = "_")
     } else {
       flag <- paste(parameter, acronym, sep = "_")
@@ -56,7 +56,8 @@ change_prm <- function(prm_biol, select_acronyms, roc, parameter,
     }
 
     # Update value. Some pesky expectations have to be added here.
-    if (is.element(parameter, c("mum", "C", "mQ", "mL", "jmL", "jmQ")) & version_flag == 1) {
+    if (is.element(parameter, c("mum", "C")) |
+        ( is.element(parameter, c("mQ", "mL", "jmL", "jmQ")) & version_flag == 1 )) {
       prm_biol[pos] <- paste(paste0(flag, "_T15"), new_value, sep = "\t")
     } else {
       prm_biol[pos] <- paste(flag, new_value, sep = "\t")
